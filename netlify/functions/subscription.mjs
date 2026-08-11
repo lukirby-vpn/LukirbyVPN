@@ -1,5 +1,16 @@
 const GIST_URL = "https://gist.githubusercontent.com/lukirby-vpn/c091eaa8e1f439828c57d9ec12a1d2b1/raw/6b2f59d0e95001b2dfcdbdf3cdbe4ecf12e89e8c/subscription.json";
 
+function toBase64UTF8(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  return btoa(binary);
+}
+
 export default async (request) => {
   if (request.method !== "GET") {
     return new Response("Method Not Allowed", {
@@ -25,6 +36,8 @@ export default async (request) => {
 
     JSON.parse(body);
 
+    const announce = "Не работает? Нажмите 🔄\nЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
+
     return new Response(body, {
       status: 200,
       headers: {
@@ -33,7 +46,7 @@ export default async (request) => {
         "profile-update-interval": "1",
         "subscription-userinfo": "upload=0; download=0; total=107374182400; expire=1790951622",
         "support-url": "https://t.me/LukirbyVPN",
-        "announce": encodeURIComponent("Не работает? Нажмите 🔄 | ЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥"),
+        "announce": "base64:" + toBase64UTF8(announce),
         "Cache-Control": "no-store"
       }
     });
