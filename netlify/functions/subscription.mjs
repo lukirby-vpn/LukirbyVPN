@@ -44,7 +44,7 @@ export default async (request) => {
         "Content-Type": "application/json",
         "profile-title": "Lukirby VPN",
         "profile-update-interval": "1",
-        "subscription-userinfo": "upload=0; download=0; total=107374182400; expire=1790951622",
+        "subscription-userinfo": "upload=0; download=0; total=0; expire=1988150400",
         "support-url": "https://t.me/LukirbyVPN",
         "announce": "base64:" + toBase64UTF8(announce),
         "Cache-Control": "no-store"
