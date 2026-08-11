@@ -1,4 +1,4 @@
-const GIST_URL = "https://gist.githubusercontent.com/lukirby-vpn/c091eaa8e1f439828c57d9ec12a1d2b1/raw/6b2f59d0e95001b2dfcdbdf3cdbe4ecf12e89e8c/subscription.json";
+const GIST_URL = "https://gist.githubusercontent.com/lukirby-vpn/c091eaa8e1f439828c57d9ec12a1d2b1/raw/subscription.json";
 
 function toBase64UTF8(text) {
   const bytes = new TextEncoder().encode(text);
