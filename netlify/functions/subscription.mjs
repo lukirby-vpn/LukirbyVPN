@@ -33,7 +33,7 @@ export default async (request) => {
         "profile-update-interval": "1",
         "subscription-userinfo": "upload=0; download=0; total=107374182400; expire=1790951622",
         "support-url": "https://t.me/LukirbyVPN",
-        "announce": "Не работает? Нажмите 🔄 | ЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥",
+        "announce": encodeURIComponent("Не работает? Нажмите 🔄 | ЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥"),
         "Cache-Control": "no-store"
       }
     });
