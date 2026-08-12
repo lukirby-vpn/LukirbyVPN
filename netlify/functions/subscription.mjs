@@ -1,4 +1,5 @@
-const GIST_URL = "https://gist.githubusercontent.com/lukirby-vpn/c091eaa8e1f439828c57d9ec12a1d2b1/raw/subscription.json";
+const REPO_RAW_BASE =
+  "https://github.com/lukirby-vpn/LukirbyVPN/tree/main";
 
 function toBase64UTF8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -11,6 +12,21 @@ function toBase64UTF8(text) {
   return btoa(binary);
 }
 
+async function fetchJSON(url) {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Lukirby-VPN-Subscription"
+    },
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(`Fetch error ${response.status}: ${url}`);
+  }
+
+  return await response.json();
+}
+
 export default async (request) => {
   if (request.method !== "GET") {
     return new Response("Method Not Allowed", {
@@ -19,44 +35,71 @@ export default async (request) => {
   }
 
   try {
-    const response = await fetch(GIST_URL, {
-      headers: {
-        "User-Agent": "Lukirby-VPN-Subscription"
-      },
-      cache: "no-store"
-    });
+    const order = await fetchJSON(
+      `${REPO_RAW_BASE}/order.json`
+    );
 
-    if (!response.ok) {
-      return new Response("Gist fetch error: " + response.status, {
-        status: 502
-      });
+    if (!Array.isArray(order)) {
+      throw new Error("order.json must contain an array");
     }
 
-    const body = await response.text();
+    const servers = [];
 
-    JSON.parse(body);
+    for (const name of order) {
+      if (
+        typeof name !== "string" ||
+        !/^[a-zA-Z0-9._-]+$/.test(name)
+      ) {
+        throw new Error(`Invalid server name: ${name}`);
+      }
 
-    const announce = "Не работает? Нажмите 🔄\nЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
+      const server = await fetchJSON(
+        `${REPO_RAW_BASE}/servers/${name}.json`
+      );
+
+      servers.push(server);
+    }
+
+    const body = JSON.stringify(servers);
+
+    const announce =
+      "Не работает? Нажмите 🔄\nЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
 
     return new Response(body, {
       status: 200,
+
       headers: {
         "Content-Type": "application/json",
+
         "profile-title": "Lukirby VPN",
+
         "profile-update-interval": "1",
-        "subscription-userinfo": "upload=0; download=0; total=0; expire=1988150400",
-        "support-url": "https://t.me/LukirbyVPN",
-        "announce": "base64:" + toBase64UTF8(announce),
-        "Cache-Control": "no-store"
+
+        "subscription-userinfo":
+          "upload=0; download=0; total=0; expire=1988150400",
+
+        "support-url":
+          "https://t.me/LukirbyVPN",
+
+        "announce":
+          "base64:" + toBase64UTF8(announce),
+
+        "Cache-Control":
+          "no-store"
       }
     });
 
   } catch (error) {
-    return new Response("Subscription error: " + error.message, {
-      status: 500,
-      headers: {
-        "Content-Type": "text/plain"
+
+    return new Response(
+      "Subscription error: " + error.message,
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "text/plain",
+          "Cache-Control": "no-store"
+        }
       }
-    });
+    );
   }
 };
