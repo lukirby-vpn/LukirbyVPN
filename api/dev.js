@@ -21,24 +21,29 @@ async function fetchJSON(url) {
   });
 
   if (!response.ok) {
-    throw new Error(`Fetch error ${response.status}: ${url}`);
+    throw new Error(
+      `Fetch error ${response.status}: ${url}`
+    );
   }
 
   try {
     return await response.json();
   } catch {
-    throw new Error(`Invalid JSON: ${url}`);
+    throw new Error(
+      `Invalid JSON: ${url}`
+    );
   }
 }
 
-export default async function handler(request) {
-  if (request.method !== "GET") {
-    return new Response("Method Not Allowed", {
-      status: 405
-    });
+export default async function handler(req, res) {
+  if (req.method !== "GET") {
+    return res
+      .status(405)
+      .send("Method Not Allowed");
   }
 
   try {
+    // Загружаем порядок DEV-серверов
     const order = await fetchJSON(
       `${REPO_RAW_BASE}/dev-order.json`
     );
@@ -49,6 +54,7 @@ export default async function handler(request) {
       );
     }
 
+    // Загружаем серверы в порядке dev-order.json
     const servers = await Promise.all(
       order.map(async (name) => {
         if (
@@ -69,34 +75,59 @@ export default async function handler(request) {
     const announce =
       "🛠️ LukirbyVPN DEV — экспериментальная подписка";
 
-    return new Response(
-      JSON.stringify(servers),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-          "profile-title": "Lukirby VPN DEV",
-          "profile-update-interval": "1",
-          "support-url": "https://t.me/LukirbyVPN",
-          "announce":
-            "base64:" +
-            toBase64UTF8(announce),
-          "Cache-Control": "no-store"
-        }
-      }
-    );
+    return res
+      .status(200)
+
+      .setHeader(
+        "Content-Type",
+        "application/json"
+      )
+
+      .setHeader(
+        "profile-title",
+        "Lukirby VPN DEV"
+      )
+
+      .setHeader(
+        "profile-update-interval",
+        "1"
+      )
+
+      .setHeader(
+        "support-url",
+        "https://t.me/LukirbyVPN"
+      )
+
+      .setHeader(
+        "announce",
+        "base64:" +
+          toBase64UTF8(announce)
+      )
+
+      .setHeader(
+        "Cache-Control",
+        "no-store"
+      )
+
+      .json(servers);
 
   } catch (error) {
-    return new Response(
-      "DEV subscription error: " +
-      error.message,
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "text/plain",
-          "Cache-Control": "no-store"
-        }
-      }
-    );
+    return res
+      .status(500)
+
+      .setHeader(
+        "Content-Type",
+        "text/plain"
+      )
+
+      .setHeader(
+        "Cache-Control",
+        "no-store"
+      )
+
+      .send(
+        "DEV subscription error: " +
+        error.message
+      );
   }
 }
