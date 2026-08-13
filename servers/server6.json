@@ -1,0 +1,469 @@
+{
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIP"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "ip": [
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.168.0.0/16",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "port": 53,
+        "type": "field",
+        "network": "udp",
+        "balancerTag": "MAIN_BALANCER"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "balancerTag": "MAIN_BALANCER"
+      }
+    ],
+    "balancers": [
+      {
+        "tag": "MAIN_BALANCER",
+        "selector": [
+          "proxy"
+        ],
+        "strategy": {
+          "type": "leastLoad",
+          "settings": {
+            "maxRTT": "1s",
+            "expected": 3,
+            "baselines": [
+              "50ms",
+              "100ms",
+              "200ms"
+            ],
+            "tolerance": 0.1
+          }
+        },
+        "fallbackTag": "block"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "185.136.12.77",
+            "port": 8443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.doctorswithoutborders.org",
+          "publicKey": "Q3lgJe5xdPLQgW6tB6oiXFhhH-B1xSz84RVS63iBeWE",
+          "shortId": "a1b2c3d4e5f6a7b8",
+          "spiderX": "/",
+          "fingerprint": "edge"
+        }
+      }
+    },
+    {
+      "tag": "proxy-2",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "185.136.12.77",
+            "port": 4443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/media-cdn/segments"
+        },
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.doctorswithoutborders.org",
+          "publicKey": "jrAi8uxTWO-AAfE7c7CBbaC66G_WBegej7gmNurLOGo",
+          "shortId": "9e5a335de26d1f5a",
+          "fingerprint": "edge"
+        }
+      }
+    },
+    {
+      "tag": "proxy-3",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "186.240.151.51",
+            "port": 8443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.airtel.in",
+          "publicKey": "R0qYwFP14E7MBp6HeBMHrbkuZbca4NLl9TXcYF71a2s",
+          "shortId": "adad37f5833cc55d",
+          "spiderX": "/",
+          "fingerprint": "firefox"
+        }
+      }
+    },
+    {
+      "tag": "proxy-4",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "94.183.219.142",
+            "port": 8443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.doctorswithoutborders.org",
+          "publicKey": "YvsA5jpHiYVJXXuDNP2v6ZvQfDhjDyfKwPb67WxaU1k",
+          "shortId": "b3c9d1e5f7a2b4c6",
+          "spiderX": "/",
+          "fingerprint": "edge"
+        }
+      }
+    },
+    {
+      "tag": "proxy-5",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "217.60.23.128",
+            "port": 2053,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/media-cdn/segments"
+        },
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "bol.com",
+          "publicKey": "kOkrRbM4u1lpeY6b-YypKpAAYTrGy5GmDoyx3oepe00",
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "tag": "proxy-6",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "31.56.188.238",
+            "port": 8443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "ftp.debian.org",
+          "publicKey": "YevvPo5mwrTsvIJHqQ73NLTCMhGwZRCr5CM4ZXfZFl0",
+          "shortId": "c7d3e9f1a5b8c2d4",
+          "spiderX": "/",
+          "fingerprint": "edge"
+        }
+      }
+    },
+    {
+      "tag": "proxy-7",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "31.56.188.238",
+            "port": 2053,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "stream-one",
+          "host": "",
+          "path": "/media-cdn/segments"
+        },
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "ftp.debian.org",
+          "publicKey": "zE8CCoVSZkf8tiL7qF3E_wK7wzMUQHUSa3EfO538kk8",
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "tag": "proxy-8",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "cdnflapi.sky-loft.online",
+            "port": 443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "packet-up",
+          "host": "cdnflapi.sky-loft.online",
+          "path": "/api/uploadFile/",
+          "extra": {
+            "path": "/api/uploadFile/",
+            "xmux": {
+              "cMaxLifetimeMs": 300000,
+              "cMaxReuseTimes": 100,
+              "maxConcurrency": "16-32",
+              "maxConnections": 0,
+              "hKeepAlivePeriod": 30
+            },
+            "seqKey": "chunk_id",
+            "sessionKey": "X-Upload-Token",
+            "xPaddingKey": "hash",
+            "seqPlacement": "query",
+            "xPaddingHeader": "X-Client-Version",
+            "xPaddingMethod": "tokenish",
+            "sessionPlacement": "header",
+            "uplinkHTTPMethod": "GET",
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "queryInHeader"
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "cdnflapi.sky-loft.online",
+          "fingerprint": "edge",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "proxy-9",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "cdn-ru.tgflovv.ru",
+            "port": 443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "packet-up",
+          "host": "cdn-ru.tgflovv.ru",
+          "path": "/api/uploadFile/",
+          "extra": {
+            "path": "/api/uploadFile/",
+            "xmux": {
+              "cMaxLifetimeMs": 300000,
+              "cMaxReuseTimes": 100,
+              "maxConcurrency": "16-32",
+              "maxConnections": 0,
+              "hKeepAlivePeriod": 30
+            },
+            "seqKey": "chunk_id",
+            "sessionKey": "X-Upload-Token",
+            "xPaddingKey": "hash",
+            "seqPlacement": "query",
+            "xPaddingHeader": "X-Client-Version",
+            "xPaddingMethod": "tokenish",
+            "sessionPlacement": "header",
+            "uplinkHTTPMethod": "GET",
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "queryInHeader"
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "cdn-ru.tgflovv.ru",
+          "fingerprint": "firefox",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "burstObservatory": {
+    "pingConfig": {
+      "timeout": "5s",
+      "interval": "15s",
+      "sampling": 3,
+      "httpMethod": "HEAD",
+      "destination": "https://www.gstatic.com/generate_204",
+      "connectivity": ""
+    },
+    "subjectSelector": [
+      "proxy"
+    ]
+  },
+  "remarks": "🇪🇺 АВТО #3"
+}
