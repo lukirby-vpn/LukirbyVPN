@@ -21,17 +21,13 @@ async function fetchJSON(url) {
   });
 
   if (!response.ok) {
-    throw new Error(
-      `Fetch error ${response.status}: ${url}`
-    );
+    throw new Error(`Fetch error ${response.status}: ${url}`);
   }
 
   try {
     return await response.json();
   } catch {
-    throw new Error(
-      `Invalid JSON: ${url}`
-    );
+    throw new Error(`Invalid JSON: ${url}`);
   }
 }
 
@@ -55,7 +51,6 @@ export default async function handler(request) {
 
     const servers = await Promise.all(
       order.map(async (name) => {
-
         if (
           typeof name !== "string" ||
           !/^[a-zA-Z0-9._-]+$/.test(name)
@@ -78,44 +73,28 @@ export default async function handler(request) {
       JSON.stringify(servers),
       {
         status: 200,
-
         headers: {
-          "Content-Type":
-            "application/json",
-
-          "profile-title":
-            "Lukirby VPN DEV",
-
-          "profile-update-interval":
-            "1",
-
-          "support-url":
-            "https://t.me/LukirbyVPN",
-
+          "Content-Type": "application/json",
+          "profile-title": "Lukirby VPN DEV",
+          "profile-update-interval": "1",
+          "support-url": "https://t.me/LukirbyVPN",
           "announce":
             "base64:" +
             toBase64UTF8(announce),
-
-          "Cache-Control":
-            "no-store"
+          "Cache-Control": "no-store"
         }
       }
     );
 
   } catch (error) {
-
     return new Response(
       "DEV subscription error: " +
       error.message,
       {
         status: 500,
-
         headers: {
-          "Content-Type":
-            "text/plain",
-
-          "Cache-Control":
-            "no-store"
+          "Content-Type": "text/plain",
+          "Cache-Control": "no-store"
         }
       }
     );
