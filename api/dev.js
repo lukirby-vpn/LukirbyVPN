@@ -21,39 +21,18 @@ async function fetchJSON(url) {
   });
 
   if (!response.ok) {
-    throw new Error(`Fetch error ${response.status}: ${url}`);
+    throw new Error(
+      `Fetch error ${response.status}: ${url}`
+    );
   }
 
   try {
     return await response.json();
   } catch {
-    throw new Error(`Invalid JSON: ${url}`);
+    throw new Error(
+      `Invalid JSON: ${url}`
+    );
   }
-}
-
-async function buildSubscription(orderFile) {
-  const order = await fetchJSON(
-    `${REPO_RAW_BASE}/${orderFile}`
-  );
-
-  if (!Array.isArray(order)) {
-    throw new Error(`${orderFile} must contain an array`);
-  }
-
-  return await Promise.all(
-    order.map(async (name) => {
-      if (
-        typeof name !== "string" ||
-        !/^[a-zA-Z0-9._-]+$/.test(name)
-      ) {
-        throw new Error(`Invalid server name: ${name}`);
-      }
-
-      return await fetchJSON(
-        `${REPO_RAW_BASE}/servers/${name}.json`
-      );
-    })
-  );
 }
 
 export default async function handler(request) {
@@ -64,32 +43,51 @@ export default async function handler(request) {
   }
 
   try {
-    const url = new URL(request.url);
+    const order = await fetchJSON(
+      `${REPO_RAW_BASE}/dev-order.json`
+    );
 
-    const isDev = url.pathname === "/api/dev";
+    if (!Array.isArray(order)) {
+      throw new Error(
+        "dev-order.json must contain an array"
+      );
+    }
 
-    const orderFile = isDev
-      ? "dev-order.json"
-      : "order.json";
+    const servers = await Promise.all(
+      order.map(async (name) => {
 
-    const servers = await buildSubscription(orderFile);
+        if (
+          typeof name !== "string" ||
+          !/^[a-zA-Z0-9._-]+$/.test(name)
+        ) {
+          throw new Error(
+            `Invalid server name: ${name}`
+          );
+        }
 
-    const announce = isDev
-      ? "🛠️ LukirbyVPN DEV — экспериментальная подписка"
-      : "Не работает? Нажмите 🔄\nЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
+        return await fetchJSON(
+          `${REPO_RAW_BASE}/servers/${name}.json`
+        );
+      })
+    );
+
+    const announce =
+      "🛠️ LukirbyVPN DEV — экспериментальная подписка";
 
     return new Response(
       JSON.stringify(servers),
       {
         status: 200,
+
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type":
+            "application/json",
 
-          "profile-title": isDev
-            ? "Lukirby VPN DEV"
-            : "Lukirby VPN",
+          "profile-title":
+            "Lukirby VPN DEV",
 
-          "profile-update-interval": "1",
+          "profile-update-interval":
+            "1",
 
           "support-url":
             "https://t.me/LukirbyVPN",
@@ -98,19 +96,26 @@ export default async function handler(request) {
             "base64:" +
             toBase64UTF8(announce),
 
-          "Cache-Control": "no-store"
+          "Cache-Control":
+            "no-store"
         }
       }
     );
 
   } catch (error) {
+
     return new Response(
-      "Subscription error: " + error.message,
+      "DEV subscription error: " +
+      error.message,
       {
         status: 500,
+
         headers: {
-          "Content-Type": "text/plain",
-          "Cache-Control": "no-store"
+          "Content-Type":
+            "text/plain",
+
+          "Cache-Control":
+            "no-store"
         }
       }
     );
