@@ -77,7 +77,7 @@
       "protocol": "blackhole"
     }
   ],
-  "remarks": "🇩🇪 Обход глушилок (резерв)"
+  "remarks": "🇩🇪 Обход глушилок (резерв)",
   "meta": {
     "customWhitelist": true
   }
