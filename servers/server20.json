@@ -1,0 +1,84 @@
+{
+  "dns": {
+    "servers": [
+      "8.8.8.8",
+      "8.8.4.4"
+    ],
+    "queryStrategy": "UseIP"
+  },
+  "routing": {
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http"
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "188.68.218.194",
+            "port": 443,
+            "users": [
+              {
+                "id": "ca889306-5c7f-4b22-aa41-e318e6e527d1",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "realitySettings": {
+          "publicKey": "j97RCvxVfMu5XWcXuAc4s8TnBTdl8PQrNFrZDQpAkng",
+          "shortId": "ea530689",
+          "serverName": "max.ru",
+          "fingerprint": "firefox"
+        },
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": "grpc"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "remarks": "🇩🇪 Обход глушилок (резерв)"
+  "meta": {
+    "customWhitelist": true
+  }
+}
