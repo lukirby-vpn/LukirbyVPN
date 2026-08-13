@@ -1,0 +1,215 @@
+{
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1",
+      "8.8.8.8"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "ip": [
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.168.0.0/16",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10"
+        ],
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "domain:ozon.com",
+          "domain:ozon.ru",
+          "domain:wildberries.ru",
+          "domain:wb.ru",
+          "domain:avito.ru",
+          "domain:vk.com",
+          "domain:yandex.ru",
+          "domain:yandex.net",
+          "domain:sber.ru",
+          "domain:sberbank.ru",
+          "domain:gosuslugi.ru",
+          "domain:mail.ru",
+          "domain:ok.ru",
+          "domain:rutube.ru",
+          "domain:tinkoff.ru",
+          "domain:raiffeisen.ru",
+          "domain:alfa-bank.ru",
+          "domain:mvideo.ru",
+          "domain:dns-shop.ru",
+          "domain:eldorado.ru",
+          "domain:citilink.ru",
+          "domain:kaspersky.ru",
+          "domain:mos.ru",
+          "domain:rbc.ru",
+          "domain:gazprombank.ru",
+          "domain:vtb.ru",
+          "domain:sbp.ru",
+          "domain:psbank.ru",
+          "domain:rosbank.ru",
+          "domain:mkb.ru",
+          "domain:sovcombank.ru",
+          "domain:homecredit.ru",
+          "domain:pochtabank.ru",
+          "domain:qiwi.com",
+          "domain:yoomoney.ru",
+          "domain:nalog.ru",
+          "domain:cbr.ru",
+          "domain:pochta.ru",
+          "domain:gibdd.ru",
+          "domain:rosreestr.ru",
+          "domain:mvd.ru",
+          "domain:fns.ru",
+          "domain:mts.ru",
+          "domain:beeline.ru",
+          "domain:megafon.ru",
+          "domain:tele2.ru",
+          "domain:yota.ru",
+          "domain:lamoda.ru",
+          "domain:sbermegamarket.ru",
+          "domain:samokat.ru",
+          "domain:cdek.ru",
+          "domain:boxberry.ru",
+          "domain:kinopoisk.ru",
+          "domain:ivi.ru",
+          "domain:okko.tv",
+          "domain:more.tv",
+          "domain:start.ru",
+          "domain:2gis.ru",
+          "domain:rzd.ru",
+          "domain:aeroflot.ru",
+          "domain:s7.ru"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "network": "tcp,udp",
+        "outboundTag": "proxy"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "cdnapi.sky-loft.online",
+            "port": 443,
+            "users": [
+              {
+                "id": "b9091368-4987-47ff-bcdb-5d31de3f42de",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "packet-up",
+          "host": "cdnapi.sky-loft.online",
+          "path": "/api/uploadFile/",
+          "extra": {
+            "path": "/api/uploadFile/",
+            "xmux": {
+              "cMaxLifetimeMs": 300000,
+              "cMaxReuseTimes": 100,
+              "maxConcurrency": "16-32",
+              "maxConnections": 0
+            },
+            "seqKey": "chunk_id",
+            "sessionKey": "X-Upload-Token",
+            "xPaddingKey": "hash",
+            "seqPlacement": "query",
+            "xPaddingHeader": "X-Client-Version",
+            "xPaddingMethod": "tokenish",
+            "sessionPlacement": "header",
+            "uplinkHTTPMethod": "GET",
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "queryInHeader"
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "cdnapi.sky-loft.online",
+          "fingerprint": "edge",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "remarks": "🇩🇪 Обход глушилок"
+}
