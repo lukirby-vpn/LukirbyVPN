@@ -1,5 +1,5 @@
-const REPO_RAW_BASE =
-  "https://raw.githubusercontent.com/lukirby-vpn/LukirbyVPN/main";
+import fs from "node:fs/promises";
+import path from "node:path";
 
 function toBase64UTF8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -12,26 +12,13 @@ function toBase64UTF8(text) {
   return btoa(binary);
 }
 
-async function fetchJSON(url) {
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Lukirby-VPN-Subscription"
-    },
-    cache: "no-store"
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `Fetch error ${response.status}: ${url}`
-    );
-  }
+async function readJSON(filePath) {
+  const text = await fs.readFile(filePath, "utf8");
 
   try {
-    return await response.json();
+    return JSON.parse(text);
   } catch {
-    throw new Error(
-      `Invalid JSON: ${url}`
-    );
+    throw new Error(`Invalid JSON: ${filePath}`);
   }
 }
 
@@ -43,9 +30,19 @@ export default async function handler(request) {
   }
 
   try {
-    const order = await fetchJSON(
-      `${REPO_RAW_BASE}/order.json`
+    const root = process.cwd();
+
+    const orderPath = path.join(
+      root,
+      "order.json"
     );
+
+    const serversPath = path.join(
+      root,
+      "servers"
+    );
+
+    const order = await readJSON(orderPath);
 
     if (!Array.isArray(order)) {
       throw new Error(
@@ -64,9 +61,12 @@ export default async function handler(request) {
           );
         }
 
-        return await fetchJSON(
-          `${REPO_RAW_BASE}/servers/${name}.json`
+        const filePath = path.join(
+          serversPath,
+          `${name}.json`
         );
+
+        return await readJSON(filePath);
       })
     );
 
