@@ -1,5 +1,5 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+const REPO_RAW_BASE =
+  "https://raw.githubusercontent.com/lukirby-vpn/LukirbyVPN/main";
 
 function toBase64UTF8(text) {
   const bytes = new TextEncoder().encode(text);
@@ -12,13 +12,26 @@ function toBase64UTF8(text) {
   return btoa(binary);
 }
 
-async function readJSON(filePath) {
-  const text = await fs.readFile(filePath, "utf8");
+async function fetchJSON(url) {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "Lukirby-VPN-Subscription"
+    },
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `Fetch error ${response.status}: ${url}`
+    );
+  }
 
   try {
-    return JSON.parse(text);
+    return await response.json();
   } catch {
-    throw new Error(`Invalid JSON: ${filePath}`);
+    throw new Error(
+      `Invalid JSON: ${url}`
+    );
   }
 }
 
@@ -30,19 +43,10 @@ export default async function handler(request) {
   }
 
   try {
-    const root = process.cwd();
-
-    const orderPath = path.join(
-      root,
-      "order.json"
+    // Получаем порядок серверов
+    const order = await fetchJSON(
+      `${REPO_RAW_BASE}/order.json`
     );
-
-    const serversPath = path.join(
-      root,
-      "servers"
-    );
-
-    const order = await readJSON(orderPath);
 
     if (!Array.isArray(order)) {
       throw new Error(
@@ -50,6 +54,7 @@ export default async function handler(request) {
       );
     }
 
+    // Загружаем серверы в порядке из order.json
     const servers = await Promise.all(
       order.map(async (name) => {
         if (
@@ -61,15 +66,14 @@ export default async function handler(request) {
           );
         }
 
-        const filePath = path.join(
-          serversPath,
-          `${name}.json`
-        );
+        const serverURL =
+          `${REPO_RAW_BASE}/servers/${encodeURIComponent(name)}.json`;
 
-        return await readJSON(filePath);
+        return await fetchJSON(serverURL);
       })
     );
 
+    // Готовая подписка для Happ
     const body = JSON.stringify(servers);
 
     const announce =
