@@ -7,17 +7,40 @@
     "queryStrategy": "UseIP"
   },
   "routing": {
+    "domainStrategy": "IPIfNonMatch",
     "rules": [
       {
         "type": "field",
-        "protocol": [
-          "bittorrent"
+        "domain": [
+          "domain:game.brawlstarsgame.com",
+          "domain:brawlstarsgame.com",
+          "domain:brawlstars.com",
+          "domain:supercell.com",
+          "domain:supercell.net",
+          "domain:supercell.io",
+          "keyword:brawlstars",
+          "keyword:brawl",
+          "keyword:supercell"
         ],
-        "outboundTag": "direct"
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
+        "port": "9443",
+        "network": "tcp,udp",
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
+        "network": "udp",
+        "outboundTag": "proxy"
+      },
+      {
+        "type": "field",
+        "network": "tcp",
+        "outboundTag": "proxy"
       }
-    ],
-    "domainMatcher": "hybrid",
-    "domainStrategy": "IPIfNonMatch"
+    ]
   },
   "inbounds": [
     {
@@ -65,7 +88,7 @@
       "settings": {
         "vnext": [
           {
-            "address": "103.167.235.100",
+            "address": "193.177.220.91",
             "port": 443,
             "users": [
               {
@@ -81,6 +104,11 @@
         "network": "tcp",
         "tcpSettings": {},
         "security": "reality",
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveIdle": 30
+        },
         "realitySettings": {
           "serverName": "kookas.fi",
           "show": false,
@@ -99,5 +127,5 @@
       "protocol": "blackhole"
     }
   ],
-  "remarks": "🇦🇺 ❌ Brawl Stars (Боты, техобслуживание)"
+  "remarks": "🇦🇺 Brawl Stars (Боты)"
 }
