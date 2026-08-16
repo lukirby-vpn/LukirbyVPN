@@ -91,6 +91,9 @@ function responseHeaders(announce) {
     "support-url":
       "https://t.me/LukirbyVPN",
 
+    "subscription-always-hwid-enable":
+      "1",
+
     "Cache-Control":
       "no-store"
   };
