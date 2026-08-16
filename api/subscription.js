@@ -4,8 +4,16 @@ const REPO_RAW_BASE =
 const BACKEND_URL =
   "https://lukirby-backend.onrender.com";
 
+
+// =========================================================
+// BASE64 UTF-8
+// =========================================================
+
 function toBase64UTF8(text) {
-  const bytes = new TextEncoder().encode(text);
+
+  const bytes =
+    new TextEncoder().encode(text);
+
   let binary = "";
 
   for (const byte of bytes) {
@@ -15,70 +23,176 @@ function toBase64UTF8(text) {
   return btoa(binary);
 }
 
+
+// =========================================================
+// FETCH JSON
+// =========================================================
+
 async function fetchJSON(url) {
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent": "Lukirby-VPN-Subscription"
-    },
-    cache: "no-store"
-  });
+
+  const response =
+    await fetch(url, {
+
+      headers: {
+        "User-Agent":
+          "Lukirby-VPN-Subscription"
+      },
+
+      cache: "no-store"
+    });
 
   if (!response.ok) {
+
     throw new Error(
       `Fetch error ${response.status}: ${url}`
     );
   }
 
   try {
+
     return await response.json();
+
   } catch {
+
     throw new Error(
       `Invalid JSON: ${url}`
     );
   }
 }
 
-async function getDeviceStatus(
+
+// =========================================================
+// GET DEVICE BY HWID
+// =========================================================
+
+async function getHWIDStatus(
   token,
-  deviceId
+  hwid
 ) {
+
   const url =
     `${BACKEND_URL}/api/subscriptions/` +
     `${encodeURIComponent(token)}` +
-    `/device-status/` +
-    `${encodeURIComponent(deviceId)}`;
+    `/hwid-status/` +
+    `${encodeURIComponent(hwid)}`;
 
-  const response = await fetch(url, {
-    headers: {
-      "User-Agent":
-        "Lukirby-VPN-Subscription"
-    },
-    cache: "no-store"
-  });
+  const response =
+    await fetch(url, {
+
+      headers: {
+        "User-Agent":
+          "Lukirby-VPN-Subscription"
+      },
+
+      cache: "no-store"
+    });
 
   if (!response.ok) {
+
     throw new Error(
       `Backend error ${response.status}`
     );
   }
 
   try {
+
     return await response.json();
+
   } catch {
+
     throw new Error(
       "Invalid backend JSON"
     );
   }
 }
 
-async function getServerFile(filename) {
+
+// =========================================================
+// REGISTER HWID
+// =========================================================
+
+async function registerHWID(
+  token,
+  hwid,
+  name
+) {
+
+  const response =
+    await fetch(
+      `${BACKEND_URL}/api/hwid`,
+      {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          "User-Agent":
+            "Lukirby-VPN-Subscription"
+        },
+
+        body: JSON.stringify({
+
+          token:
+            token,
+
+          hwid:
+            hwid,
+
+          name:
+            name ||
+            "Unknown device"
+        }),
+
+        cache: "no-store"
+      }
+    );
+
+  if (!response.ok) {
+
+    throw new Error(
+      `Backend error ${response.status}`
+    );
+  }
+
+  try {
+
+    return await response.json();
+
+  } catch {
+
+    throw new Error(
+      "Invalid backend JSON"
+    );
+  }
+}
+
+
+// =========================================================
+// GET SERVER FILE
+// =========================================================
+
+async function getServerFile(
+  filename
+) {
+
   return await fetchJSON(
     `${REPO_RAW_BASE}/servers/${filename}`
   );
 }
 
-function responseHeaders(announce) {
+
+// =========================================================
+// RESPONSE HEADERS
+// =========================================================
+
+function responseHeaders(
+  announce
+) {
+
   const headers = {
+
     "Content-Type":
       "application/json",
 
@@ -91,6 +205,10 @@ function responseHeaders(announce) {
     "support-url":
       "https://t.me/LukirbyVPN",
 
+    // =====================================================
+    // HAPP HWID
+    // =====================================================
+
     "subscription-always-hwid-enable":
       "1",
 
@@ -98,19 +216,36 @@ function responseHeaders(announce) {
       "no-store"
   };
 
+
   if (announce) {
+
     headers["announce"] =
       "base64:" +
       toBase64UTF8(announce);
   }
 
+
   return headers;
 }
 
+
+// =========================================================
+// MAIN
+// =========================================================
+
 export default {
+
   async fetch(request) {
 
-    if (request.method !== "GET") {
+    // -----------------------------------------------------
+    // ONLY GET
+    // -----------------------------------------------------
+
+    if (
+      request.method !==
+      "GET"
+    ) {
+
       return new Response(
         "Method Not Allowed",
         {
@@ -119,48 +254,47 @@ export default {
       );
     }
 
+
     try {
+
       const url =
-        new URL(request.url);
+        new URL(
+          request.url
+        );
+
+
+      // ===================================================
+      // TOKEN
+      // ===================================================
 
       const token =
-        url.searchParams.get("token");
-
-      const deviceId =
         url.searchParams.get(
-          "device_id"
+          "token"
         );
+
 
       if (!token) {
-        return new Response(
-          JSON.stringify({
-            ok: false,
-            error: "Missing token"
-          }),
-          {
-            status: 400,
-            headers: {
-              "Content-Type":
-                "application/json",
-              "Cache-Control":
-                "no-store"
-            }
-          }
-        );
-      }
 
-      if (!deviceId) {
         return new Response(
+
           JSON.stringify({
+
             ok: false,
+
             error:
-              "Missing device_id"
+              "Missing token"
+
           }),
+
           {
+
             status: 400,
+
             headers: {
+
               "Content-Type":
                 "application/json",
+
               "Cache-Control":
                 "no-store"
             }
@@ -168,31 +302,108 @@ export default {
         );
       }
 
-      /*
-       * Получаем состояние устройства
-       * и состояние подписки его владельца.
-       */
+
+      // ===================================================
+      // HWID
+      // ===================================================
+      //
+      // Happ отправляет HWID в HTTP-заголовке.
+      //
+      // Используем оба варианта регистра,
+      // чтобы не зависеть от конкретного клиента.
+      //
+      // ===================================================
+
+      const hwid =
+        request.headers.get(
+          "X-HWID"
+        ) ||
+        request.headers.get(
+          "x-hwid"
+        );
+
+
+      // ===================================================
+      // ЕСЛИ HWID НЕ ПРИШЁЛ
+      // ===================================================
+
+      if (!hwid) {
+
+        return new Response(
+
+          JSON.stringify({
+
+            ok: false,
+
+            error:
+              "Missing HWID"
+
+          }),
+
+          {
+
+            status: 400,
+
+            headers: {
+
+              "Content-Type":
+                "application/json",
+
+              "Cache-Control":
+                "no-store"
+            }
+          }
+        );
+      }
+
+
+      // ===================================================
+      // DEVICE NAME
+      // ===================================================
+      //
+      // Если Happ передаст модель устройства,
+      // используем её.
+      //
+      // Иначе просто Unknown device.
+      //
+      // ===================================================
+
+      const deviceModel =
+        request.headers.get(
+          "X-Device-Model"
+        ) ||
+        request.headers.get(
+          "x-device-model"
+        ) ||
+        "Unknown device";
+
+
+      // ===================================================
+      // РЕГИСТРИРУЕМ HWID
+      // ===================================================
 
       const device =
-        await getDeviceStatus(
+        await registerHWID(
           token,
-          deviceId
+          hwid,
+          deviceModel
         );
 
+
       if (!device.ok) {
+
         throw new Error(
-          "Device status unavailable"
+          "HWID registration failed"
         );
       }
 
-      /*
-       * =================================================
-       * УСТРОЙСТВО УДАЛЕНО
-       * =================================================
-       */
+
+      // ===================================================
+      // УСТРОЙСТВО УДАЛЕНО
+      // ===================================================
 
       if (
-        device.device_status ===
+        device.status ===
         "removed"
       ) {
 
@@ -201,11 +412,15 @@ export default {
             "serverDeleted.json"
           );
 
+
         return new Response(
+
           JSON.stringify([
             server
           ]),
+
           {
+
             status: 200,
 
             headers:
@@ -214,17 +429,24 @@ export default {
         );
       }
 
-      /*
-       * =================================================
-       * ПРЕВЫШЕН ЛИМИТ
-       * =================================================
-       *
-       * Например:
-       *
-       * 5/5 → обычные сервера
-       * 6/5 → ВСЕ устройства владельца
-       *       получают serverLimitReached.json
-       */
+
+      // ===================================================
+      // ПРЕВЫШЕН ЛИМИТ
+      // ===================================================
+      //
+      // Например:
+      //
+      // VIP = 5
+      //
+      // 5/5 → обычные сервера
+      //
+      // 6/5 → ВСЕ устройства этого владельца
+      //        получают serverLimitReached.json
+      //
+      // Проверяется именно user_id владельца,
+      // который backend определяет через token.
+      //
+      // ===================================================
 
       if (
         device.active_devices >
@@ -236,11 +458,15 @@ export default {
             "serverLimitReached.json"
           );
 
+
         return new Response(
+
           JSON.stringify([
             server
           ]),
+
           {
+
             status: 200,
 
             headers:
@@ -249,53 +475,90 @@ export default {
         );
       }
 
-      /*
-       * =================================================
-       * ОБЫЧНАЯ ПОДПИСКА
-       * =================================================
-       */
+
+      // ===================================================
+      // ОБЫЧНАЯ ПОДПИСКА
+      // ===================================================
 
       const order =
         await fetchJSON(
           `${REPO_RAW_BASE}/order.json`
         );
 
-      if (!Array.isArray(order)) {
+
+      if (
+        !Array.isArray(
+          order
+        )
+      ) {
+
         throw new Error(
           "order.json must contain an array"
         );
       }
 
+
+      // ===================================================
+      // ЗАГРУЖАЕМ СЕРВЕРА
+      // ===================================================
+
       const servers =
         await Promise.all(
+
           order.map(
-            async (name) => {
+
+            async (
+              name
+            ) => {
 
               if (
-                typeof name !== "string" ||
+
+                typeof name !==
+                  "string" ||
+
                 !/^[a-zA-Z0-9._-]+$/.test(
                   name
                 )
+
               ) {
+
                 throw new Error(
                   `Invalid server name: ${name}`
                 );
               }
 
+
               return await fetchJSON(
+
                 `${REPO_RAW_BASE}/servers/${name}.json`
+
               );
             }
           )
         );
 
+
+      // ===================================================
+      // ANNOUNCE
+      // ===================================================
+
       const announce =
         "Не работает? Нажмите 🔄\n" +
         "ЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
 
+
+      // ===================================================
+      // RESPONSE
+      // ===================================================
+
       return new Response(
-        JSON.stringify(servers),
+
+        JSON.stringify(
+          servers
+        ),
+
         {
+
           status: 200,
 
           headers:
@@ -305,15 +568,22 @@ export default {
         }
       );
 
-    } catch (error) {
+
+    } catch (
+      error
+    ) {
 
       return new Response(
+
         "Subscription error: " +
         error.message,
+
         {
+
           status: 500,
 
           headers: {
+
             "Content-Type":
               "text/plain",
 
