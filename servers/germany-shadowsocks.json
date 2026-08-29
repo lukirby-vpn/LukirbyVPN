@@ -1,4 +1,5 @@
 {
+  "remarks": "🇩🇪 Германия #1",
   "log": {
     "loglevel": "error"
   },
@@ -37,8 +38,7 @@
             "level": 8
           }
         ]
-      },
-      "remarks": "🇩🇪 Германия #1"
+      }
     },
     {
       "tag": "direct",
