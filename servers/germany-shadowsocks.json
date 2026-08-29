@@ -56,9 +56,6 @@
       "protocol": "dns"
     }
   ],
-
-  "remarks": "🇩🇪 Германия #1",
-  
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [
@@ -132,5 +129,7 @@
       "statsOutboundUplink": true
     }
   },
-  "stats": {}
+  "stats": {},
+
+  "remarks": "🇩🇪 Германия #1"
 }
