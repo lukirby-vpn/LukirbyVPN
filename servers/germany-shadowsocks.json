@@ -34,7 +34,8 @@
             "port": 59924,
             "method": "2022-blake3-chacha20-poly1305",
             "password": "kmkoVYMV3CiplXx9HrZ9swEnhpwqXMY0rOXC34dEi08=",
-            "level": 8
+            "level": 8,
+            "remarks": "🇩🇪 Германия #1"
           }
         ]
       }
