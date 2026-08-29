@@ -1,0 +1,8 @@
+{
+  "name": "🇩🇪 Германия #1",
+  "type": "shadowsocks",
+  "server": "130.61.144.2",
+  "port": 59924,
+  "method": "2022-blake3-chacha20-poly1305",
+  "password": "kmkoVYMV3CiplXx9HrZ9swEnhpwqXMY0rOXC34dEi08="
+}
