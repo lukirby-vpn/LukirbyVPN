@@ -1,0 +1,123 @@
+# ==========================================
+# Python
+# ==========================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python build / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Environment / secrets
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Logs
+# ==========================================
+
+*.log
+logs/
+log/
+*.out
+
+# ==========================================
+# Temporary files
+# ==========================================
+
+temp_*.json
+temp_*.txt
+temp_*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Xray temporary files
+# ==========================================
+
+xray
+xray.exe
+xray.zip
+xray.tar.gz
+xray_config.json
+temp_xray_*.json
+
+# ==========================================
+# Test / cache data
+# ==========================================
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# ==========================================
+# IDE / editors
+# ==========================================
+
+.vscode/
+.idea/
+*.code-workspace
+
+# ==========================================
+# OS files
+# ==========================================
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# Backup files
+# ==========================================
+
+*.bak
+*.backup
+*.old
+*.orig
+
+# ==========================================
+# Local runtime data
+# ==========================================
+
+runtime/
+cache/
+tmp/
+
+# ==========================================
+# Keep these tracked:
+#
+# servers/
+# data/known_servers.json
+# sources.txt
+# ==========================================
