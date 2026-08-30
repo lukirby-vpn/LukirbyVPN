@@ -1,0 +1,132 @@
+name: VPN Scanner & Generator
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vpn-scanner
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # ==========================================
+      # Checkout
+      # ==========================================
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ==========================================
+      # Python
+      # ==========================================
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # ==========================================
+      # System dependencies
+      # ==========================================
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            curl \
+            unzip \
+            ca-certificates
+
+      # ==========================================
+      # Python dependencies
+      # ==========================================
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      # ==========================================
+      # Download Xray
+      # ==========================================
+
+      - name: Download Xray-core
+        run: |
+          set -e
+
+          curl -fL \
+            "https://github.com/XTLS/Xray-core/releases/latest/download/Xray-linux-64.zip" \
+            -o xray.zip
+
+          unzip -o xray.zip
+
+          chmod +x xray
+
+          ./xray version
+
+          rm -f xray.zip
+
+      # ==========================================
+      # Run scanner
+      # ==========================================
+
+      - name: Run VPN Scanner
+        run: |
+          set -e
+
+          export PYTHONPATH="${GITHUB_WORKSPACE}/src"
+
+          python src/main.py
+
+      # ==========================================
+      # Show generated servers
+      # ==========================================
+
+      - name: Show generated servers
+        run: |
+          echo "Generated servers:"
+          find servers \
+            -maxdepth 1 \
+            -type f \
+            -name "NewGeneratedServer*.json" \
+            -print \
+            | sort -V
+
+          echo ""
+          echo "Known server fingerprints:"
+          wc -l data/known_servers.json || true
+
+      # ==========================================
+      # Commit changes
+      # ==========================================
+
+      - name: Commit and push changes
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add servers/ data/known_servers.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Auto-update VPN servers"
+
+          git push
