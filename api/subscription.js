@@ -197,7 +197,7 @@ function responseHeaders(
       "application/json",
 
     "profile-title":
-      "Lukirby VPN",
+      "Ook VPN",
 
     "profile-update-interval":
       "1",
@@ -544,7 +544,7 @@ export default {
 
       const announce =
         "Не работает? Нажмите 🔄\n" +
-        "ЛУЧШИЙ ВПН ДЛЯ BRAWL STARS!🔥";
+        "Безлимит, бесплатно!🔥";
 
 
       // ===================================================
