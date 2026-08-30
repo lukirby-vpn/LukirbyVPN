@@ -23,12 +23,12 @@
         "udp": true
       },
       "sniffing": {
+        "enabled": true,
         "destOverride": [
           "http",
           "quic",
           "tls"
         ],
-        "enabled": true,
         "excludedDomains": [],
         "metadataOnly": false,
         "routeOnly": true
@@ -44,12 +44,12 @@
         "udp": true
       },
       "sniffing": {
+        "enabled": true,
         "destOverride": [
           "http",
           "quic",
           "tls"
         ],
-        "enabled": true,
         "excludedDomains": [],
         "metadataOnly": false,
         "routeOnly": true
@@ -65,12 +65,12 @@
         "udp": true
       },
       "sniffing": {
+        "enabled": true,
         "destOverride": [
           "http",
           "quic",
           "tls"
         ],
-        "enabled": true,
         "excludedDomains": [],
         "metadataOnly": false,
         "routeOnly": true
@@ -90,10 +90,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -112,6 +109,7 @@
       }
     },
     {
+      "tag": "proxy-grpc-reality-1",
       "protocol": "vless",
       "settings": {
         "vnext": [
@@ -120,30 +118,27 @@
             "port": 50051,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e"
+                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
+                "encryption": "none"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "grpcSettings": {
-          "authority": "",
-          "mode": false
-        },
         "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": ""
+        },
         "realitySettings": {
           "fingerprint": "firefox",
           "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
           "serverName": "jobinvest.ru",
           "shortId": "cd1dd1e4a801f54b",
           "spiderX": "/"
-        },
-        "security": "reality"
-      },
-      "tag": "proxy-grpc-reality-1"
+        }
+      }
     },
     {
       "tag": "proxy-tcp-reality-direct-2",
@@ -156,10 +151,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -178,6 +170,7 @@
       }
     },
     {
+      "tag": "proxy-grpc-reality-2",
       "protocol": "vless",
       "settings": {
         "vnext": [
@@ -186,30 +179,27 @@
             "port": 50051,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e"
+                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
+                "encryption": "none"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "grpcSettings": {
-          "authority": "",
-          "mode": false
-        },
         "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": ""
+        },
         "realitySettings": {
           "fingerprint": "firefox",
           "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
           "serverName": "jobinvest.ru",
           "shortId": "cd1dd1e4a801f54b",
           "spiderX": "/"
-        },
-        "security": "reality"
-      },
-      "tag": "proxy-grpc-reality-2"
+        }
+      }
     },
     {
       "tag": "proxy-tcp-reality-direct-3",
@@ -222,10 +212,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -244,6 +231,7 @@
       }
     },
     {
+      "tag": "proxy-grpc-reality-3",
       "protocol": "vless",
       "settings": {
         "vnext": [
@@ -252,30 +240,27 @@
             "port": 50051,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e"
+                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
+                "encryption": "none"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "grpcSettings": {
-          "authority": "",
-          "mode": false
-        },
         "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": ""
+        },
         "realitySettings": {
           "fingerprint": "firefox",
           "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
           "serverName": "jobinvest.ru",
           "shortId": "cd1dd1e4a801f54b",
           "spiderX": "/"
-        },
-        "security": "reality"
-      },
-      "tag": "proxy-grpc-reality-3"
+        }
+      }
     },
     {
       "tag": "proxy-tcp-reality-direct-4",
@@ -288,10 +273,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -310,6 +292,7 @@
       }
     },
     {
+      "tag": "proxy-grpc-reality-4",
       "protocol": "vless",
       "settings": {
         "vnext": [
@@ -318,30 +301,27 @@
             "port": 50051,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e"
+                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
+                "encryption": "none"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "grpcSettings": {
-          "authority": "",
-          "mode": false
-        },
         "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": ""
+        },
         "realitySettings": {
           "fingerprint": "firefox",
           "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
           "serverName": "jobinvest.ru",
           "shortId": "cd1dd1e4a801f54b",
           "spiderX": "/"
-        },
-        "security": "reality"
-      },
-      "tag": "proxy-grpc-reality-4"
+        }
+      }
     },
     {
       "tag": "proxy-tcp-reality-direct-5",
@@ -354,10 +334,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -376,6 +353,7 @@
       }
     },
     {
+      "tag": "proxy-grpc-reality-5",
       "protocol": "vless",
       "settings": {
         "vnext": [
@@ -384,30 +362,27 @@
             "port": 50051,
             "users": [
               {
-                "encryption": "none",
-                "flow": "",
-                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e"
+                "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
+                "encryption": "none"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "grpcSettings": {
-          "authority": "",
-          "mode": false
-        },
         "network": "grpc",
+        "security": "reality",
+        "grpcSettings": {
+          "serviceName": ""
+        },
         "realitySettings": {
           "fingerprint": "firefox",
           "publicKey": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
           "serverName": "jobinvest.ru",
           "shortId": "cd1dd1e4a801f54b",
           "spiderX": "/"
-        },
-        "security": "reality"
-      },
-      "tag": "proxy-grpc-reality-5"
+        }
+      }
     },
     {
       "tag": "proxy-tcp-reality-bridge",
@@ -420,10 +395,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -452,10 +424,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -484,10 +453,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -516,10 +482,7 @@
             "users": [
               {
                 "id": "46b825f3-d710-48c4-87f8-dcd1693f761e",
-                "security": "auto",
                 "encryption": "none",
-                "email": "https://gozargah.github.io/marzban/",
-                "alterId": 0,
                 "flow": "xtls-rprx-vision"
               }
             ]
@@ -538,37 +501,34 @@
       }
     },
     {
+      "tag": "direct",
       "protocol": "freedom",
-      "domainStrategy": "ForceIPv4",
-      "tag": "direct"
+      "domainStrategy": "ForceIPv4"
     },
     {
-      "protocol": "blackhole",
-      "tag": "block"
+      "tag": "block",
+      "protocol": "blackhole"
     }
   ],
   "observatory": {
     "subjectSelector": [
-      "youtube-proxy-1",
       "proxy-tcp-reality-direct-1",
-      "proxy-hysteria-1",
-      "proxy-grpc-reality-1",
       "proxy-tcp-reality-direct-2",
-      "proxy-hysteria-2",
-      "proxy-grpc-reality-2",
       "proxy-tcp-reality-direct-3",
-      "proxy-hysteria-3",
-      "proxy-grpc-reality-3",
       "proxy-tcp-reality-direct-4",
-      "proxy-hysteria-4",
-      "proxy-grpc-reality-4",
       "proxy-tcp-reality-direct-5",
-      "proxy-hysteria-5",
+      "proxy-grpc-reality-1",
+      "proxy-grpc-reality-2",
+      "proxy-grpc-reality-3",
+      "proxy-grpc-reality-4",
       "proxy-grpc-reality-5",
-      "proxy-tcp-reality-bridge"
+      "proxy-tcp-reality-bridge",
+      "youtube-proxy-1",
+      "tiktok-proxy",
+      "us-proxy"
     ],
     "probeURL": "https://cloudflare.com/cdn-cgi/trace",
-    "probeInterval": "10m",
+    "probeInterval": "1m",
     "enableConcurrency": true
   },
   "routing": {
@@ -577,22 +537,29 @@
       {
         "tag": "balancer",
         "selector": [
-          "proxy-tcp-reality-direct",
-          "proxy-hysteria",
-          "proxy-grpc-reality"
+          "proxy-tcp-reality-direct-1",
+          "proxy-tcp-reality-direct-2",
+          "proxy-tcp-reality-direct-3",
+          "proxy-tcp-reality-direct-4",
+          "proxy-tcp-reality-direct-5",
+          "proxy-grpc-reality-1",
+          "proxy-grpc-reality-2",
+          "proxy-grpc-reality-3",
+          "proxy-grpc-reality-4",
+          "proxy-grpc-reality-5"
         ],
         "strategy": {
-          "type": "roundRobin"
+          "type": "leastPing"
         },
         "fallbackTag": "proxy-tcp-reality-bridge"
       },
       {
         "tag": "balancer-youtube",
         "selector": [
-          "youtube-proxy"
+          "youtube-proxy-1"
         ],
         "strategy": {
-          "type": "leastLoad"
+          "type": "leastPing"
         },
         "fallbackTag": "youtube-proxy-1"
       }
@@ -676,8 +643,6 @@
           "domain:flightradar24.com",
           "domain:101hotels.com",
           "domain:level.travel",
-          "domain:1welsu.top",
-          "domain:ourauthpoint777.com",
           "domain:windowsupdate.com",
           "domain:boosty.to",
           "domain:paymaster.pro",
@@ -687,31 +652,14 @@
           "domain:paybox.money",
           "domain:payture.com",
           "domain:liqpay.com",
-          "domain:m-pos.pro",
           "domain:cloudpayments.com",
           "domain:best2pay.com",
           "domain:tinkoffpay.com",
           "domain:interkassa.com",
           "domain:webmoney.com",
           "domain:payanyway.com",
-          "domain:metib.online",
-          "domain:gateline.net",
           "domain:cryptocloud.plus",
-          "domain:rukassa.is",
-          "domain:morune.com",
-          "domain:enot.io",
-          "domain:payselection.com",
-          "domain:walletone.com",
-          "domain:aaio.so",
-          "domain:atol.online",
-          "domain:freekassa.com",
-          "domain:kassa.ai",
-          "domain:fkwallet.io",
-          "domain:kassa.shop",
           "domain:agoda.com",
-          "domain:lyimg.com",
-          "domain:like.video",
-          "domain:moedelo.org",
           "domain:accuweather.com",
           "domain:kaspersky.com",
           "domain:icloud.com",
@@ -729,29 +677,16 @@
           "domain:imdb.com",
           "domain:pathofexile2.com",
           "domain:wc3.info",
-          "domain:yalenkino.pro",
           "domain:yandex.video",
-          "domain:petersburgedu.ru",
           "domain:hh.ru",
           "domain:akamaized.net",
           "domain:telemetr.me",
-          "domain:downloadmirror.intel.com",
           "domain:kinopoisk.ru",
           "domain:gov.ru",
-          "domain:r54.fssp.gov.ru",
           "domain:faceit.com",
-          "domain:broadcasthe.net",
-          "domain:newtorrent.matrixhome.net",
-          "domain:newtorrent.matrixhome.net",
-          "domain:kino.matrixhome.net",
-          "domain:sickw.com",
-          "domain:arkadacasino695.com",
-          "domain:arkadacasino695.ru",
           "domain:yandex.cloud",
           "domain:emias.info",
           "domain:perplexity.ai",
-          "domain:singular.net",
-          "domain:Downdogapp.com",
           "domain:catbox.moe",
           "domain:bitrix24.net",
           "domain:bitrix.info",
@@ -761,49 +696,37 @@
           "domain:yandex.games",
           "domain:yandex.music",
           "domain:yandex.money",
-          "domain:yoomoney.com",
           "domain:yandex.eu",
           "domain:yandex.st",
           "domain:2gis.com",
           "domain:shutterstock.com",
-          "domain:24h.tv",
-          "domain:Platform24.tv",
           "domain:nodr.app",
           "domain:teleport.media",
           "domain:chessgames.com",
-          "domain:.xn--p1ai",
           "domain:mijia.tech",
           "domain:teamhd.org",
           "domain:keenetic.pro",
-          "domain:Prav.io",
           "domain:yaplakal.com",
-          "domain:Rbxcdn.com",
+          "domain:rbxcdn.com",
           "domain:chat2desk.com",
           "domain:ozonusercontent.com",
           "domain:zoiper.com",
-          "domain:zoiper.com",
-          "domain:Yandex",
           "domain:sprosivracha.com",
           "domain:userapi.com",
           "domain:okko.sport",
           "domain:ivi.ru",
-          "domain:Mijia.tech",
           "domain:yeelight.com",
           "domain:onesignal.com",
           "domain:sentry.io",
           "domain:appcenter.ms",
           "domain:imshop.io",
-          "domain:Ren.tv",
           "domain:cian.ru",
           "domain:shara.tv",
-          "domain:dexter-serial.com",
           "domain:kucoin.com",
           "domain:bitget.com",
           "domain:gate.io",
           "domain:mexc.com",
           "domain:huobi.com",
-          "domain:bybit.com",
-          "domain:binance.com",
           "domain:okx.com",
           "domain:bingx.com",
           "domain:unrealengine.com",
@@ -821,10 +744,10 @@
           "domain:cdninstagram.com",
           "domain:igcdn.com",
           "domain:fbcdn.net",
-          "domain:Animego.org",
+          "domain:animego.org",
           "domain:sndcdn.com",
           "domain:tfile.ru",
-          "domain:Torrents.ru",
+          "domain:torrents.ru",
           "domain:torrentnote.ru",
           "domain:fast-torrent.ru",
           "domain:microsoft.com",
@@ -837,17 +760,14 @@
           "domain:tutamail.com",
           "domain:tutanota.de",
           "domain:tutanota.org",
-          "domain:tutamail.com",
           "domain:tutaemail.com",
-          "domain:keemail.me",
           "domain:spotify.com",
           "domain:scdn.co",
           "domain:spotilocal.com",
           "domain:spotifycdn.com",
           "domain:spotifyedge.com",
-          "domain:Zahav.ru",
+          "domain:zahav.ru",
           "domain:mycdn.me",
-          "domain:userapi.com",
           "domain:vkuser.net",
           "domain:mradx.net",
           "domain:yandexcloud.net",
@@ -860,7 +780,6 @@
           "domain:pr-cy.ru",
           "domain:imgur.com",
           "domain:amdm.ru",
-          "domain:qiwikoshelek-gid.ru",
           "domain:trv-science.ru",
           "domain:sssrvpn.pro",
           "domain:aniu.ru",
@@ -868,15 +787,12 @@
           "domain:makersuite.google.com",
           "domain:aistudio.google.com",
           "domain:automacon.net",
-          "domain:automacon.net",
-          "domain:tr-msk.test.ru",
-          "domain:fg-msk.bbr.ru",
           "domain:2ip.ru",
           "domain:animespirit.ru",
-          "domain:Exler.ru",
+          "domain:exler.ru",
           "domain:samsebeskazal.com",
           "domain:motoforum.ru",
-          "domain:Speedtest.rt.ru"
+          "domain:speedtest.rt.ru"
         ],
         "balancerTag": "balancer"
       },
@@ -934,4 +850,4 @@
   "meta": {
     "customRegular": true
   }
-    }
+          }
