@@ -1,0 +1,161 @@
+{
+  "dns": {
+    "hosts": {
+      "ntc.party": [
+        "130.255.77.28"
+      ]
+    },
+    "queryStrategy": "UseIPv4",
+    "servers": [
+      {
+        "address": "77.88.8.8",
+        "domains": [
+          "geosite:category-ru",
+          "geosite:private"
+        ],
+        "timeoutMs": 600,
+        "unexpectedIPs": [
+          "geoip:private"
+        ]
+      },
+      "1.1.1.1",
+      "8.8.8.8"
+    ],
+    "useSystemHosts": false
+  },
+  "log": {
+    "loglevel": "warning"
+  },
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "domain:oneme.ru",
+          "domain:max.ru"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "ip": [
+          "geoip:private"
+        ],
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "ip": [
+          "geoip:ru"
+        ],
+        "type": "field",
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "geosite:private"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": [
+          "regexp:(^|\\.)ru$",
+          "regexp:(^|\\.)xn--p1ai$",
+          "regexp:(^|\\.)su$",
+          "domain:2gis.ru",
+          "domain:2gis.com",
+          "domain:dgis.ru",
+          "domain:maps.2gis.com",
+          "domain:static.maps.2gis.com",
+          "regexp:(^|\\.)2gis\\.ru$",
+          "regexp:(^|\\.)2gis\\.com$"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "135.106.178.226",
+            "port": 2087,
+            "users": [
+              {
+                "id": "b091731e-bf7d-4c77-86c1-64fb9219a44f",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "path": "/ws",
+          "host": "135.106.178.226"
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "remarks": "🇺🇸 США #2"
+}
