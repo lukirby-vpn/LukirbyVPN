@@ -212,6 +212,9 @@ function responseHeaders(
     "subscription-always-hwid-enable":
       "1",
 
+    "subscription-userinfo":
+      "upload=0; download=0; total=0; expire=3383251200",
+  
     "Cache-Control":
       "no-store"
   };
@@ -544,7 +547,7 @@ export default {
 
       const announce =
         "Не работает? Нажмите 🔄\n" +
-        "Безлимит, бесплатно!🔥";
+        "🎮 Огромный список серверов, абсолютно бесплатно 🔥";
 
 
       // ===================================================
