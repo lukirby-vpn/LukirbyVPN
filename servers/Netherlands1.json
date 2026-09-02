@@ -1,176 +1,108 @@
 {
-  "api": {
-    "listen": "[::1]:10085",
-    "services": [
-      "StatsService"
-    ],
-    "tag": "api"
-  },
   "dns": {
-    "hosts": {
-      "domain:googleapis.cn": "googleapis.com"
-    },
-    "queryStrategy": "UseIPv4",
     "servers": [
       "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIP"
+  },
+  "routing": {
+    "rules": [
       {
-        "address": "1.1.1.1",
-        "domains": [],
-        "port": 53
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
       },
       {
-        "address": "8.8.8.8",
-        "domains": [],
-        "port": 53
+        "domain": [
+          "geosite:category-ru"
+        ],
+        "outboundTag": "direct"
       }
-    ]
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
   },
   "inbounds": [
     {
-      "listen": "127.0.0.1",
+      "tag": "socks",
       "port": 10808,
+      "listen": "127.0.0.1",
       "protocol": "socks",
       "settings": {
-        "auth": "noauth",
         "udp": true,
-        "userLevel": 8
+        "auth": "noauth"
       },
       "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
         "destOverride": [
           "http",
           "tls",
           "quic"
-        ],
-        "enabled": true
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
       },
-      "tag": "socks"
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
     }
   ],
-  "log": {
-    "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
-    "dnsLog": true,
-    "error": "/data/user/0/com.happproxy/files/logs/error/1788110484556_error_log.txt",
-    "loglevel": "debug"
-  },
   "outbounds": [
     {
-      "mux": {
-        "concurrency": -1,
-        "enabled": false,
-        "xudpConcurrency": 8,
-        "xudpProxyUDP443": ""
-      },
-      "protocol": "trojan",
+      "tag": "proxy",
+      "protocol": "vless",
       "settings": {
-        "servers": [
+        "vnext": [
           {
-            "address": "tr-netherlands.unlimited-access.ru",
-            "flow": "",
-            "level": 8,
-            "method": "chacha20-poly1305",
-            "ota": false,
-            "password": "kxHw-Dk-e9dffgzYszMlEqLJ92AnY3Pi",
-            "port": 443
+            "address": "nl.chick-team.ru",
+            "port": 443,
+            "users": [
+              {
+                "id": "de6d0cd9-b46e-4a17-b032-8a186fd6073b",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
           }
         ]
       },
       "streamSettings": {
-        "finalmask": {
-          "tcp": [
-            {
-              "settings": {
-                "delay": "10-20",
-                "length": "50-100",
-                "packets": "tlshello",
-                "maxSplit": "100-200"
-              },
-              "type": "fragment"
-            }
-          ],
-          "udp": [
-            {
-              "settings": {
-                "noise": [
-                  {
-                    "rand": "1-8192"
-                  }
-                ]
-              },
-              "type": "noise"
-            }
-          ]
-        },
         "network": "tcp",
-        "security": "tls",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          }
-        },
-        "tlsSettings": {
-          "alpn": [
-            "http/1.1"
-          ],
-          "fingerprint": "firefox",
-          "serverName": "tr-netherlands.unlimited-access.ru",
-          "show": false
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "nl.chick-team.ru",
+          "publicKey": "aLdyGbloIzzeClW7_SPWL0IZpcaUWsA7rlmbNieggWk",
+          "shortId": "0894e51863b5c395",
+          "fingerprint": "firefox"
         }
-      },
-      "tag": "proxy"
+      }
     },
     {
-      "protocol": "freedom",
-      "tag": "direct"
+      "tag": "direct",
+      "protocol": "freedom"
     },
     {
-      "protocol": "blackhole",
-      "tag": "block"
+      "tag": "block",
+      "protocol": "blackhole"
     }
   ],
-  "policy": {
-    "levels": {
-      "8": {
-        "connIdle": 300,
-        "downlinkOnly": 1,
-        "handshake": 4,
-        "uplinkOnly": 1
-      }
-    },
-    "system": {
-      "statsOutboundUplink": true,
-      "statsOutboundDownlink": true
-    }
-  },
-  "remarks": "🇳🇱 Нидерланды #1",
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "ip": [
-          "1.1.1.1"
-        ],
-        "outboundTag": "proxy",
-        "port": "53"
-      },
-      {
-        "ip": [
-          "8.8.8.8"
-        ],
-        "outboundTag": "direct",
-        "port": "53"
-      },
-      {
-        "ip": [
-          "10.0.0.0/8",
-          "172.16.0.0/12",
-          "192.168.0.0/16",
-          "169.254.0.0/16",
-          "224.0.0.0/4",
-          "255.255.255.255"
-        ],
-        "outboundTag": "direct"
-      }
-    ]
-  },
-  "stats": {}
+  "remarks": "🇳🇱Нидерланды #1"
 }
