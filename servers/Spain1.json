@@ -1,144 +1,108 @@
 {
-  "api": {
-    "listen": "[::1]:10085",
-    "services": [
-      "StatsService"
-    ],
-    "tag": "api"
-  },
   "dns": {
-    "hosts": {
-      "cloudflare-dns.com": "1.1.1.1",
-      "domain:googleapis.cn": "googleapis.com",
-      "dns.google": "8.8.8.8"
-    },
-    "queryStrategy": "UseIPv4",
     "servers": [
-      "https://cloudflare-dns.com/dns-query",
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIP"
+  },
+  "routing": {
+    "rules": [
       {
-        "address": "https://cloudflare-dns.com/dns-query",
-        "domains": []
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "domain": [
+          "geosite:category-ru"
+        ],
+        "outboundTag": "direct"
       }
-    ]
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
   },
   "inbounds": [
     {
-      "listen": "127.0.0.1",
+      "tag": "socks",
       "port": 10808,
+      "listen": "127.0.0.1",
       "protocol": "socks",
       "settings": {
-        "auth": "noauth",
         "udp": true,
-        "userLevel": 8
+        "auth": "noauth"
       },
       "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
         "destOverride": [
           "http",
           "tls",
           "quic"
-        ],
-        "enabled": true
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
       },
-      "tag": "socks"
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
     }
   ],
-  "log": {
-    "access": "/data/user/0/com.happproxy/files/logs/access/access_log.txt",
-    "dnsLog": true,
-    "error": "/data/user/0/com.happproxy/files/logs/error/1788046725844_error_log.txt",
-    "loglevel": "debug"
-  },
   "outbounds": [
     {
-      "mux": {
-        "concurrency": -1,
-        "enabled": false,
-        "xudpConcurrency": 8,
-        "xudpProxyUDP443": ""
-      },
-      "protocol": "shadowsocks",
+      "tag": "proxy",
+      "protocol": "vless",
       "settings": {
-        "servers": [
+        "vnext": [
           {
-            "address": "108.181.121.226",
-            "level": 8,
-            "method": "chacha20-ietf-poly1305",
-            "ota": false,
-            "password": "WSyL4XTwNsdv",
-            "port": 8388
+            "address": "192.142.37.217",
+            "port": 443,
+            "users": [
+              {
+                "id": "de6d0cd9-b46e-4a17-b032-8a186fd6073b",
+                "encryption": "none",
+                "flow": "xtls-rprx-vision"
+              }
+            ]
           }
         ]
       },
       "streamSettings": {
         "network": "tcp",
-        "security": ""
-      },
-      "tag": "proxy"
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "www.oracle.com",
+          "publicKey": "aFbCyrLOre-V3ORpBjqenGfDt62Ng_i1sSq-DmZHVgc",
+          "shortId": "89e0494514ec",
+          "fingerprint": "chrome"
+        }
+      }
     },
     {
-      "protocol": "freedom",
-      "tag": "direct"
+      "tag": "direct",
+      "protocol": "freedom"
     },
     {
-      "protocol": "blackhole",
-      "tag": "block"
+      "tag": "block",
+      "protocol": "blackhole"
     }
   ],
-  "policy": {
-    "levels": {
-      "8": {
-        "connIdle": 300,
-        "downlinkOnly": 1,
-        "handshake": 4,
-        "uplinkOnly": 1
-      }
-    },
-    "system": {
-      "statsOutboundUplink": true,
-      "statsOutboundDownlink": true
-    }
-  },
-  "remarks": "🇪🇸 Испания #1",
-  "routing": {
-    "domainStrategy": "IPIfNonMatch",
-    "rules": [
-      {
-        "ip": [
-          "1.1.1.1"
-        ],
-        "outboundTag": "proxy",
-        "port": "443"
-      },
-      {
-        "ip": [
-          "8.8.8.8"
-        ],
-        "outboundTag": "direct",
-        "port": "53"
-      },
-      {
-        "ip": [
-          "10.0.0.0/8",
-          "172.16.0.0/12",
-          "192.168.0.0/16",
-          "169.254.0.0/16",
-          "224.0.0.0/4",
-          "255.255.255.255"
-        ],
-        "outboundTag": "direct"
-      },
-      {
-        "ip": [
-          "10.0.0.0/8",
-          "172.16.0.0/12",
-          "192.168.0.0/16",
-          "169.254.0.0/16",
-          "224.0.0.0/4",
-          "255.255.255.255"
-        ],
-        "outboundTag": "direct"
-      }
-    ]
-  },
-  "stats": {}
+  "remarks": "🇪🇸Испания"
 }
