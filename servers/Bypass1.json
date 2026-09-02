@@ -1,0 +1,138 @@
+{
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "1.0.0.1"
+    ],
+    "queryStrategy": "UseIP"
+  },
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "domain": [
+          "geosite:category-ru"
+        ],
+        "outboundTag": "direct"
+      }
+    ],
+    "domainMatcher": "hybrid",
+    "domainStrategy": "IPIfNonMatch"
+  },
+  "inbounds": [
+    {
+      "tag": "socks",
+      "port": 10808,
+      "listen": "127.0.0.1",
+      "protocol": "socks",
+      "settings": {
+        "udp": true,
+        "auth": "noauth"
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "127.0.0.1",
+      "protocol": "http",
+      "settings": {
+        "allowTransparent": false
+      },
+      "sniffing": {
+        "enabled": true,
+        "routeOnly": false,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vless",
+      "settings": {
+        "vnext": [
+          {
+            "address": "ftq0kieu.yotsuba.space",
+            "port": 443,
+            "users": [
+              {
+                "id": "de6d0cd9-b46e-4a17-b032-8a186fd6073b",
+                "encryption": "none",
+                "flow": ""
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "mode": "packet-up",
+          "host": "ftq0kieu.yotsuba.space",
+          "path": "/api/generate/",
+          "extra": {
+            "mode": "packet-up",
+            "xmux": {
+              "cMaxReuseTimes": 0,
+              "maxConcurrency": 0,
+              "maxConnections": "16-32",
+              "hKeepAlivePeriod": 20,
+              "hMaxRequestTimes": "600-900",
+              "hMaxReusableSecs": "120-240"
+            },
+            "seqKey": "offset",
+            "noSSEHeader": false,
+            "xPaddingKey": "q",
+            "seqPlacement": "query",
+            "sessionIDKey": "sid",
+            "xPaddingBytes": "48-256",
+            "xPaddingMethod": "tokenish",
+            "uplinkHTTPMethod": "DELETE",
+            "xPaddingObfsMode": true,
+            "xPaddingPlacement": "query",
+            "scMaxEachPostBytes": "262144-786432",
+            "sessionIDPlacement": "query",
+            "scMinPostsIntervalMs": "30"
+          }
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "ftq0kieu.yotsuba.space",
+          "enableSessionResumption": false,
+          "fingerprint": "firefox",
+          "alpn": [
+            "h2"
+          ]
+        }
+      }
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom"
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole"
+    }
+  ],
+  "remarks": "🇷🇺 Обход глушилок #1"
+}
