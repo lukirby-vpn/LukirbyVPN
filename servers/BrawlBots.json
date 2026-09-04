@@ -10,33 +10,16 @@
     "rules": [
       {
         "type": "field",
-        "domain": [
-          "domain:game.brawlstarsgame.com",
-          "domain:brawlstarsgame.com",
-          "domain:brawlstars.com",
-          "domain:supercell.com",
-          "domain:supercell.net",
-          "domain:supercell.io",
-          "keyword:brawlstars",
-          "keyword:brawl",
-          "keyword:supercell"
+        "protocol": [
+          "bittorrent"
         ],
-        "outboundTag": "proxy"
-      },
-      {
-        "port": "9443",
-        "type": "field",
-        "network": "tcp,udp",
-        "outboundTag": "proxy"
+        "outboundTag": "direct"
       },
       {
         "type": "field",
-        "network": "udp",
-        "outboundTag": "proxy"
-      },
-      {
-        "port": "443",
-        "type": "field",
+        "domain": [
+          "geosite:category-ru"
+        ],
         "outboundTag": "direct"
       }
     ],
@@ -89,11 +72,11 @@
       "settings": {
         "vnext": [
           {
-            "address": "193.177.220.91",
+            "address": "167.254.241.67",
             "port": 443,
             "users": [
               {
-                "id": "052d0bc5-02de-426e-986d-b6528cd41380",
+                "id": "51238fe2-dc61-45cd-b3a6-ebb212c6c7c8",
                 "encryption": "none",
                 "flow": "xtls-rprx-vision"
               }
@@ -106,10 +89,9 @@
         "tcpSettings": {},
         "security": "reality",
         "realitySettings": {
-          "serverName": "kookas.fi",
-          "publicKey": "qB_eMu3ZO_wGITnyIqJ7Kt39-h9oHFnHlQQEqA-r3VA",
-          "shortId": "43dcff53849b81e6",
-          "fingerprint": "firefox"
+          "serverName": "sin.pidoras-dns.xyz",
+          "publicKey": "0-lBJqxVGmySHUgkss11bLTxp80nFUcpFrvzHqQoqWw",
+          "fingerprint": "qq"
         }
       }
     },
@@ -122,5 +104,5 @@
       "protocol": "blackhole"
     }
   ],
-  "remarks": "🇦🇺 Австралия #1 (BrawlStars слабые игроки)"
+  "remarks": "🇸🇬 Сингапур (Бравл слабые игроки)"
 }
