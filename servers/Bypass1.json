@@ -16,6 +16,7 @@
         "outboundTag": "direct"
       },
       {
+        "type": "field",
         "domain": [
           "geosite:category-ru"
         ],
@@ -71,57 +72,26 @@
       "settings": {
         "vnext": [
           {
-            "address": "ftq0kieu.yotsuba.space",
+            "address": "78.159.245.161",
             "port": 443,
             "users": [
               {
-                "id": "de6d0cd9-b46e-4a17-b032-8a186fd6073b",
+                "id": "51238fe2-dc61-45cd-b3a6-ebb212c6c7c8",
                 "encryption": "none",
-                "flow": ""
+                "flow": "xtls-rprx-vision"
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "network": "xhttp",
-        "xhttpSettings": {
-          "mode": "packet-up",
-          "host": "ftq0kieu.yotsuba.space",
-          "path": "/api/generate/",
-          "extra": {
-            "mode": "packet-up",
-            "xmux": {
-              "cMaxReuseTimes": 0,
-              "maxConcurrency": 0,
-              "maxConnections": "16-32",
-              "hKeepAlivePeriod": 20,
-              "hMaxRequestTimes": "600-900",
-              "hMaxReusableSecs": "120-240"
-            },
-            "seqKey": "offset",
-            "noSSEHeader": false,
-            "xPaddingKey": "q",
-            "seqPlacement": "query",
-            "sessionIDKey": "sid",
-            "xPaddingBytes": "48-256",
-            "xPaddingMethod": "tokenish",
-            "uplinkHTTPMethod": "DELETE",
-            "xPaddingObfsMode": true,
-            "xPaddingPlacement": "query",
-            "scMaxEachPostBytes": "262144-786432",
-            "sessionIDPlacement": "query",
-            "scMinPostsIntervalMs": "30"
-          }
-        },
-        "security": "tls",
-        "tlsSettings": {
-          "serverName": "ftq0kieu.yotsuba.space",
-          "enableSessionResumption": false,
-          "fingerprint": "firefox",
-          "alpn": [
-            "h2"
-          ]
+        "network": "tcp",
+        "tcpSettings": {},
+        "security": "reality",
+        "realitySettings": {
+          "serverName": "msk.cdnvideo.work",
+          "publicKey": "uTtaQ2ukMIbjoqBEZY97u8JtwsMKshUO8HTPMdlJ2Ro",
+          "fingerprint": "qq"
         }
       }
     },
@@ -134,5 +104,5 @@
       "protocol": "blackhole"
     }
   ],
-  "remarks": "🇷🇺 Обход глушилок #1"
+  "remarks": "🇷🇺 Обход глушилок  #1"
 }
