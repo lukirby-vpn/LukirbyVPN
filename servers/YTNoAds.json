@@ -71,27 +71,34 @@
       "settings": {
         "vnext": [
           {
-            "address": "yt.chick-team.ru",
+            "address": "yt2.chick-team.ru",
             "port": 443,
             "users": [
               {
                 "id": "4ab7ea85-8fab-4fe8-8195-1b6f1044c4f7",
                 "encryption": "none",
-                "flow": "xtls-rprx-vision"
+                "flow": ""
               }
             ]
           }
         ]
       },
       "streamSettings": {
-        "network": "tcp",
-        "tcpSettings": {},
-        "security": "reality",
-        "realitySettings": {
-          "serverName": "api-maps.yandex.ru",
-          "publicKey": "6J829WZ6hhEtCmz8CfBBBP69ikMDlYPF2Lumyel6XTI",
-          "shortId": "d484643ca8396614",
-          "fingerprint": "firefox"
+        "network": "ws",
+        "wsSettings": {
+          "path": "/lovelive",
+          "host": "yt2.chick-team.ru",
+          "headers": {}
+        },
+        "security": "tls",
+        "tlsSettings": {
+          "serverName": "yt2.chick-team.ru",
+          "enableSessionResumption": false,
+          "fingerprint": "chrome",
+          "alpn": [
+            "h2",
+            "http/1.1"
+          ]
         }
       }
     },
@@ -104,5 +111,5 @@
       "protocol": "blackhole"
     }
   ],
-  "remarks": "🇷🇺 YT без рекламы #1"
+  "remarks": "🇷🇺 YT без рекламы 📺"
 }
